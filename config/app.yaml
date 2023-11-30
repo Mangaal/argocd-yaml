@@ -1,5 +1,6 @@
 apiVersion: nextgen.k8s.test/v1alpha1
 kind: AppReplica
+namespace: argocd-1
 metadata:
   annotations:
     argocd.argoproj.io/sync-options: ServerSideApply=true
