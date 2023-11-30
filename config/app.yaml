@@ -4,7 +4,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-options: ServerSideApply=true
   name: app
-  namespace: argocd-1
+  namespace: argocd-0
 spec:
   deploymentName: example-foo
   replicas: 2
