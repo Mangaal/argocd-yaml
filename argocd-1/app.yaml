@@ -7,5 +7,3 @@ spec:
   deploymentName: example-foo
   replicas: 2
   deploymentImage: "nginx:latest"
-status: 
-  availableReplicas: 0
