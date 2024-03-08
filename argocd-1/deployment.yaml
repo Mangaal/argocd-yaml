@@ -15,10 +15,3 @@ spec:
       containers:
       - name: nginx
         image: nginx:latest
-        volumeMounts:
-        - name: config-volume
-          mountPath: /tmp
-      volumes:
-      - name: config-volume
-        configMap:
-          name: big-text
