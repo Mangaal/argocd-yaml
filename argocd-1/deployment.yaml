@@ -1,22 +1,19 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: example
-  labels:
-    app: httpd
-  namespace: openshift-gitops
+  name: nginx-deployment
 spec:
-  securityContext:
-    runAsNonRoot: true
-    seccompProfile:
-      type: RuntimeDefault
-  containers:
-    - name: httpd
-      image: 'image-registry.openshift-image-registry.svc:5000/openshift/httpd:latest'
-      ports:
-        - containerPort: 8080
-      securityContext:
-        allowPrivilegeEscalation: false
-        capabilities:
-          drop:
-            - ALL
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
