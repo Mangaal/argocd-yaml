@@ -13,5 +13,5 @@ spec:
         app: nginx
     spec:
       containers:
-      - name: nginx
-        image: nginx:latest
+      - name: httpd
+        image: 'image-registry.openshift-image-registry.svc:5000/openshift/httpd:latest'
