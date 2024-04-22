@@ -1,9 +1,6 @@
-apiVersion: nextgen.k8s.test/v1alpha1
-kind: AppReplica
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: app
-  namespace: argocd-10
-spec:
-  deploymentName: example-foo
-  replicas: 2
-  deploymentImage: "nginx:latest"
+  name: my-configmap
+data:
+  apple: "2"
