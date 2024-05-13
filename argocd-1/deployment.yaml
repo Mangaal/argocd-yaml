@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: quay.io/repository/nginx/nginx-ingress
+        image: quay.io/nginx/nginx-ingress
         ports:
         - containerPort: 80
