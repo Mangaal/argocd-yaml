@@ -1,19 +1,8 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: nginx-deployment
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: nginx
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-      - name: nginx
-        image: docker.io/library/nginx
-        ports:
-        - containerPort: 80
+  name: example-configmap
+data:
+  # Add your key-value pairs here
+  key1: value1
+  key2: value2
