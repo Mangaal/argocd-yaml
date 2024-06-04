@@ -1,6 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  labels:
+    app: nginx
+    app.kubernetes.io/instance: test
   name: nginx-deployment
 spec:
   replicas: 2
