@@ -1,19 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment  # Name of the deployment
+  name: nginx-deployment
 spec:
-  replicas: 3  # Number of desired replicas (pods)
+  replicas: 1
   selector:
     matchLabels:
-      app: nginx  # Labels to match pods controlled by this deployment
+      app: nginx
   template:
     metadata:
       labels:
-        app: nginx  # Labels applied to pods created by this deployment
+        app: nginx
     spec:
+      initContainers:
+      - name: init-nginx
+        image: alpine
+        command: ["sh", "-c", "mkdir -p /var/cache/nginx/client_temp && chmod 777 /var/cache/nginx/client_temp"]
+        volumeMounts:
+        - name: nginx-cache
+          mountPath: /var/cache/nginx
       containers:
-      - name: nginx  # Container name
-        image: docker.io/library/nginx:latest # Docker image used by the container
+      - name: nginx
+        image: nginx
         ports:
-        - containerPort: 80  # Port to expose on the container
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-conf
+          mountPath: /etc/nginx/conf.d
+          readOnly: true
+        - name: nginx-cache
+          mountPath: /var/cache/nginx
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: nginx-config
+      - name: nginx-cache
+        emptyDir: {}
