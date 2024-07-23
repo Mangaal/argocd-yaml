@@ -9,10 +9,12 @@ spec:
   replicas: 3
   selector:
     matchLabels:
+      kube-burner: argocd-performance-test
       app: nginx
   template:
     metadata:
       labels:
+        kube-burner: argocd-performance-test
         app: nginx
     spec:
       containers:
