@@ -1,24 +1,11 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: nginx-deployment
-  labels:
-    kube-burner: argocd-performance-test
-    app: nginx
+  name: my-service
 spec:
-  replicas: 3
   selector:
-    matchLabels:
-      kube-burner: argocd-performance-test
-      app: nginx
-  template:
-    metadata:
-      labels:
-        kube-burner: argocd-performance-test
-        app: nginx
-    spec:
-      containers:
-      - name: nginx
-        image: nginx
-        ports:
-        - containerPort: 80
+    app.kubernetes.io/name: MyApp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376
