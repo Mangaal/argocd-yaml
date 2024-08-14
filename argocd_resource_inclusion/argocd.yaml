@@ -1,0 +1,171 @@
+apiVersion: argoproj.io/v1beta1
+kind: ArgoCD
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  controller:
+    processors: {}
+    resources:
+      limits:
+        cpu: '2'
+        memory: 2Gi
+      requests:
+        cpu: 250m
+        memory: 1Gi
+    sharding: {}
+  grafana:
+    enabled: false
+    ingress:
+      enabled: false
+    route:
+      enabled: false
+  ha:
+    enabled: false
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+  initialSSHKnownHosts: {}
+  monitoring:
+    enabled: false
+  notifications:
+    enabled: false
+  prometheus:
+    enabled: false
+    ingress:
+      enabled: false
+    route:
+      enabled: false
+  rbac:
+    defaultPolicy: ''
+    policy: |
+      g, system:cluster-admins, role:admin
+    scopes: '[groups]'
+  redis:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+  repo:
+    resources:
+      limits:
+        cpu: '1'
+        memory: 1Gi
+      requests:
+        cpu: 250m
+        memory: 256Mi
+  resourceInclusions: |
+    - apiGroups:
+      - ""                  # Core API group
+      kinds:
+      - Pod
+      - Service
+      - ReplicationController
+      - Namespace
+      - Node
+      - Endpoints
+      - PersistentVolume
+      - PersistentVolumeClaim
+      - Secret
+      - ConfigMap
+      - ServiceAccount
+      - ResourceQuota
+      - LimitRange
+      clusters:
+      - "*"
+    - apiGroups:
+      - apps                # API group for deployment-related resources
+      kinds:
+      - Deployment
+      - StatefulSet
+      - DaemonSet
+      - ReplicaSet
+      - ControllerRevision
+      clusters:
+      - "*"
+    - apiGroups:
+      - batch               # API group for batch-related resources
+      kinds:
+      - Job
+      - CronJob
+      clusters:
+      - "*"
+    - apiGroups:
+      - extensions          # API group for some older resources
+      kinds:
+      - Ingress
+      clusters:
+      - "*"
+    - apiGroups:
+      - networking.k8s.io   # API group for networking-related resources
+      kinds:
+      - NetworkPolicy
+      - Ingress
+      clusters:
+      - "*"
+    - apiGroups:
+      - storage.k8s.io      # API group for storage-related resources
+      kinds:
+      - StorageClass
+      - VolumeAttachment
+      clusters:
+      - "*"
+    - apiGroups:
+      - admissionregistration.k8s.io  # API group for admission controllers
+      kinds:
+      - ValidatingWebhookConfiguration
+      - MutatingWebhookConfiguration
+      clusters:
+      - "*"
+    - apiGroups:
+      - apiextensions.k8s.io          # API group for custom resource definitions
+      kinds:
+      - CustomResourceDefinition
+      clusters:
+      - "*"
+    - apiGroups:
+      - policy                       # API group for policy-related resources
+      kinds:
+      - PodDisruptionBudget
+      - PodSecurityPolicy
+      clusters:
+      - "*"
+  server:
+    autoscale:
+      enabled: false
+    grpc:
+      ingress:
+        enabled: false
+    ingress:
+      enabled: false
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 125m
+        memory: 128Mi
+    route:
+      enabled: true
+    service:
+      type: ''
+  sso:
+    dex:
+      openShiftOAuth: true
+      resources:
+        limits:
+          cpu: 500m
+          memory: 256Mi
+        requests:
+          cpu: 250m
+          memory: 128Mi
+    provider: dex
+  tls:
+    ca: {}
