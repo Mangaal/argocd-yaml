@@ -63,72 +63,45 @@ spec:
         memory: 256Mi
   resourceInclusions: |
     - apiGroups:
-      - ""                  # Core API group
+      - ""               # Core API group
       kinds:
-      - Pod
-      - Service
-      - ReplicationController
-      - Namespace
-      - Node
-      - Endpoints
-      - PersistentVolume
-      - PersistentVolumeClaim
-      - Secret
-      - ConfigMap
-      - ServiceAccount
-      - ResourceQuota
-      - LimitRange
+      - "*"
       clusters:
       - "*"
     - apiGroups:
-      - apps                # API group for deployment-related resources
+      - "apps"
       kinds:
-      - Deployment
-      - StatefulSet
-      - DaemonSet
-      - ReplicaSet
-      - ControllerRevision
+      - "*"
       clusters:
       - "*"
     - apiGroups:
-      - batch               # API group for batch-related resources
+      - "batch"
       kinds:
-      - Job
-      - CronJob
+      - "*"
       clusters:
       - "*"
     - apiGroups:
-      - extensions          # API group for some older resources
+      - "extensions"
       kinds:
-      - Ingress
+      - "*"
       clusters:
       - "*"
     - apiGroups:
-      - networking.k8s.io   # API group for networking-related resources
+      - "networking.k8s.io"
       kinds:
-      - NetworkPolicy
-      - Ingress
+      - "*"
       clusters:
       - "*"
     - apiGroups:
-      - storage.k8s.io      # API group for storage-related resources
+      - "rbac.authorization.k8s.io"
       kinds:
-      - StorageClass
-      - VolumeAttachment
+      - "*"
       clusters:
       - "*"
     - apiGroups:
-      - admissionregistration.k8s.io  # API group for admission controllers
+      - "storage.k8s.io"
       kinds:
-      - ValidatingWebhookConfiguration
-      - MutatingWebhookConfiguration
-      clusters:
       - "*"
-    - apiGroups:
-      - policy                       # API group for policy-related resources
-      kinds:
-      - PodDisruptionBudget
-      - PodSecurityPolicy
       clusters:
       - "*"
   server:
