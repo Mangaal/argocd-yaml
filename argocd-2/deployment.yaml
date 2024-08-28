@@ -22,11 +22,3 @@ spec:
         image: nginx
         ports:
         - containerPort: 80
-
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: bubble-animation-config
-  labels:
-    kube-burner: argocd-performance-test
