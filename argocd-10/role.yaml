@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: monitoring-cluster-role-binding
+subjects:
+  - kind: ServiceAccount
+    name: default  # Service account name in the 'default' namespace
+    namespace: default  # Namespace
+roleRef:
+  kind: ClusterRole
+  name: monitoring-cluster-role  # Name of the ClusterRole created above
+  apiGroup: rbac.authorization.k8s.io
