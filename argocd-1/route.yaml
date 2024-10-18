@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: nginx-route
+  labels:
+    kube-burner: argocd-performance-test
+    app: nginx
+spec:
+  to:
+    kind: Service
+    name: nginx-service
+  port:
+    targetPort: 80
+  wildcardPolicy: None  # Set to 'Subdomain' if wildcard routing is needed
