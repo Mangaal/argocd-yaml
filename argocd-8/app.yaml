@@ -1,9 +1,34 @@
-apiVersion: nextgen.k8s.test/v1alpha1
-kind: AppReplica
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
-  name: app
-  namespace: argocd-8
+  name: example-sts
+  labels:
+    app: example
 spec:
-  deploymentName: example-foo
+  serviceName: "example-service"
   replicas: 2
-  deploymentImage: "nginx:latest"
+  selector:
+    matchLabels:
+      app: example
+  template:
+    metadata:
+      labels:
+        app: example
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: example-pvc
+          mountPath: /usr/share/nginx/html
+  volumeClaimTemplates:
+  - metadata:
+      name: example-pvc
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "standard" # Default storage class in Minikube
+      resources:
+        requests:
+          storage: 1Gi
