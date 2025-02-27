@@ -3,7 +3,6 @@ kind: Route
 metadata:
   annotations:
     openshift.io/host.generated: "true"
-  creationTimestamp: "2025-02-04T17:47:31Z"
   labels:
     app.kubernetes.io/managed-by: openshift-git
   name: openshift-gitops-server-2
