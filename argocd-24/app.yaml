@@ -13,7 +13,7 @@ metadata:
   name: grafana-operator-test
   namespace: grafana-operator
 spec:
-  channel: v4
+  channel: v5
   name: grafana-operator
   installPlanApproval: Automatic
   source: community-operators
