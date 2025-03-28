@@ -1,9 +1,10 @@
-apiVersion: nextgen.k8s.test/v1alpha1
-kind: AppReplica
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
 metadata:
-  name: app
-  namespace: argocd-24
+  name: grafana
 spec:
-  deploymentName: example-foo
-  replicas: 2
-  deploymentImage: "nginx:latest"
+  channel: v4
+  installPlanApproval: Automatic
+  name: grafana-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
