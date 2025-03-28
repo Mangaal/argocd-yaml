@@ -1,20 +1,20 @@
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  generateName: grafana-operator-
-  namespace: grafana-operator
+  name: argocd-prod-apps
+  namespace: argocd-prod-apps
 spec:
   targetNamespaces:
-  - grafana-operator
+  - argocd-prod-apps
 ---
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
-  generateName: grafana-operator-
-  namespace: grafana-operator
+  name: argocd-prod-apps
+  namespace: argocd-prod-apps
 spec:
   channel: v4
-  name: grafana-operator
+  name: argocd-prod-apps
   installPlanApproval: Automatic
   source: community-operators
   sourceNamespace: openshift-marketplace
