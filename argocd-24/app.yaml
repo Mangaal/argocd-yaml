@@ -1,15 +1,13 @@
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  generateName: grafana-operator-
 spec:
   targetNamespaces:
-  - grafana-operator
+  - argocd-prod-apps
 ---
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
-  generateName: grafana-operator-
 spec:
   channel: v4
   name: grafana-operator
