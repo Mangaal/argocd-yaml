@@ -9,4 +9,4 @@ spec:
   name: project-quay
   source: operatorhubio-catalog
   sourceNamespace: olm
-  startingCSV: quay-operator.v3.8.1  
+  startingCSV: quay-operator.v3.8.13
