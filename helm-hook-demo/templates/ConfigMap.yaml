@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configmap.name }}
+data:
+  # Key-value pairs
+  example.property.1: "value1"
+  example.property.2: "value2"
+  # Multi-line string
+  example.property.3: |
+    Line1
+    Line2
+    Line3
