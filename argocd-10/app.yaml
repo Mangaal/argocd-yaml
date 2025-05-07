@@ -2,16 +2,9 @@ apiVersion: argoproj.io/v1beta1
 kind: ArgoCD
 metadata:
   name: argocd
-  generation: 1
+  namespace: openshift-gitops-operator
 spec:
   server:
-    autoscale:
-      enabled: false
-    grpc:
-      ingress:
-        enabled: false
-    ingress:
-      enabled: false
     resources:
       limits:
         cpu: 500m
@@ -21,35 +14,8 @@ spec:
         memory: 128Mi
     route:
       enabled: true
-    service:
-      type: ''
-  grafana:
-    enabled: false
-    ingress:
-      enabled: false
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
-    route:
-      enabled: false
-  monitoring:
-    enabled: false
-  notifications:
-    enabled: false
-  prometheus:
-    enabled: false
-    ingress:
-      enabled: false
-    route:
-      enabled: false
-  initialSSHKnownHosts: {}
   sso:
     dex:
-      openShiftOAuth: true
       resources:
         limits:
           cpu: 500m
@@ -57,44 +23,22 @@ spec:
         requests:
           cpu: 250m
           memory: 128Mi
+      openShiftOAuth: true
     provider: dex
-  applicationSet:
-    resources:
-      limits:
-        cpu: '2'
-        memory: 1Gi
-      requests:
-        cpu: 250m
-        memory: 512Mi
-    webhookServer:
-      ingress:
-        enabled: false
-      route:
-        enabled: false
   rbac:
     defaultPolicy: ''
     policy: |
       g, system:cluster-admins, role:admin
-      g, cluster-admins, role:admin
     scopes: '[groups]'
   repo:
     resources:
       limits:
-        cpu: '1'
-        memory: 1Gi
+        cpu: 1000m
+        memory: 1024Mi
       requests:
         cpu: 250m
         memory: 256Mi
-  resourceExclusions: |
-    - apiGroups:
-      - tekton.dev
-      clusters:
-      - '*'
-      kinds:
-      - TaskRun
-      - PipelineRun
   ha:
-    enabled: false
     resources:
       limits:
         cpu: 500m
@@ -102,8 +46,7 @@ spec:
       requests:
         cpu: 250m
         memory: 128Mi
-  tls:
-    ca: {}
+    enabled: false
   redis:
     resources:
       limits:
@@ -113,12 +56,18 @@ spec:
         cpu: 250m
         memory: 128Mi
   controller:
-    processors: {}
     resources:
       limits:
-        cpu: '2'
-        memory: 2Gi
+        cpu: 2000m
+        memory: 2048Mi
       requests:
         cpu: 250m
-        memory: 1Gi
-    sharding: {}
+        memory: 1024Mi
+  resourceExclusions: |
+    - apiGroups:
+      - tekton.dev
+      clusters:
+      - '*'
+      kinds:
+      - TaskRun
+      - PipelineRun        
