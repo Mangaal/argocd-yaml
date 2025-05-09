@@ -15,7 +15,7 @@ spec:
       labels:
         app: demo
     spec:
-      serviceAccountName: app
+      serviceAccountName: demo-app
       containers:
         - name: app
           image: my-app:1.0.0
