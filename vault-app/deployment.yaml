@@ -18,7 +18,7 @@ spec:
       serviceAccountName: demo-app
       containers:
         - name: app
-          image: my-app:1.0.0
+          image: nginx
           volumeMounts:
             - name: 'vault-db-creds'
               mountPath: '/mnt/secrets-store'
