@@ -20,10 +20,10 @@ spec:
       - name: dockerhub-secret
       containers:
         - name: app
-          image: nginx
+          image: my-app
           volumeMounts:
             - name: 'vault-db-creds'
-              mountPath: '/tmp/secrets-store'
+              mountPath: '/mnt/secrets-store'
               readOnly: true
       volumes:
         - name: vault-db-creds
