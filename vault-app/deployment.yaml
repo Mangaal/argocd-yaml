@@ -21,7 +21,7 @@ spec:
           image: nginx
           volumeMounts:
             - name: 'vault-db-creds'
-              mountPath: '/mnt/secrets-store'
+              mountPath: '/tmp/secrets-store'
               readOnly: true
       volumes:
         - name: vault-db-creds
