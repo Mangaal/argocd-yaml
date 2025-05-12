@@ -16,11 +16,11 @@ spec:
         app: demo
     spec:
       serviceAccountName: demo-app
+      imagePullSecrets:
+      - name: dockerhub-secret
       containers:
         - name: app
           image: nginx
-          imagePullSecrets:
-          - name: mangaal-pull-secret
           volumeMounts:
             - name: 'vault-db-creds'
               mountPath: '/tmp/secrets-store'
