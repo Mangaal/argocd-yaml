@@ -15,7 +15,7 @@ spec:
       labels:
         app: demo
     spec:
-      serviceAccountName: demo-app
+      serviceAccountName: demo-app-sa
       imagePullSecrets:
       - name: dockerhub-secret
       containers:
