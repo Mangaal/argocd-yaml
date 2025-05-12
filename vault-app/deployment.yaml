@@ -20,7 +20,7 @@ spec:
       - name: dockerhub-secret
       containers:
         - name: app
-          image: nginx
+          image: quay.io/mangaal/argocd-resource-tracker:test-v1
           volumeMounts:
             - name: 'vault-db-creds'
               mountPath: '/tmp/secrets-store'
