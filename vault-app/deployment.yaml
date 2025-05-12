@@ -20,7 +20,7 @@ spec:
       - name: dockerhub-secret
       containers:
         - name: app
-          image: my-app
+          image: bitnami/nginx
           volumeMounts:
             - name: 'vault-db-creds'
               mountPath: '/mnt/secrets-store'
