@@ -20,6 +20,9 @@ spec:
       - name: dockerhub-secret
       containers:
         - name: app
+          args: 
+          - run
+          - --loglevel=debug
           image: quay.io/mangaal/argocd-resource-tracker:test-v1
           volumeMounts:
             - name: 'vault-db-creds'
