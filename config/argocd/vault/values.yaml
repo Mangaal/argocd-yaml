@@ -1,7 +1,6 @@
 csi:
   enabled: true
 server:
-  dataStorage:
-    enabled: false  # <-- Disable PVC (i.e., no persistent storage)
+  enabled: false
 injector:
   enabled: false
