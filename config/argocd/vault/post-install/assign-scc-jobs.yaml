@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: assign-scc-vault
+  namespace: vault
+  annotations:
+    "argocd.argoproj.io/hook": PostSync
+    "argocd.argoproj.io/hook-delete-policy": HookSucceeded
+spec:
+  template:
+    spec:
+      serviceAccountName: default
+      containers:
+        - name: assign-scc
+          image: registry.redhat.io/openshift4/ose-cli:latest
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              oc adm policy add-scc-to-user privileged system:serviceaccount:vault:secrets-store-csi-driver
+              oc adm policy add-scc-to-user privileged system:serviceaccount:vault:vault-csi-provider
+      restartPolicy: OnFailure
