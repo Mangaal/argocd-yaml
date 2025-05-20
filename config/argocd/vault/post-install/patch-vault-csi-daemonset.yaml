@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: patch-vault-csi
+  namespace: vault
+  annotations:
+    "argocd.argoproj.io/hook": PostSync
+    "argocd.argoproj.io/hook-delete-policy": HookSucceeded
+spec:
+  template:
+    spec:
+      serviceAccountName: default
+      containers:
+        - name: patch-vault-csi
+          image: registry.redhat.io/openshift4/ose-cli:latest
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              kubectl patch daemonset vault-csi-provider \
+                -n vault \
+                --type='json' \
+                --patch='[{"op": "add", "path": "/spec/template/spec/containers/0/securityContext", "value": {"privileged": true}}]'
+      restartPolicy: OnFailure
