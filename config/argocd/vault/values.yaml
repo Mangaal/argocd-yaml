@@ -1,7 +1,0 @@
-csi:
-  enabled: true
-server:
-  dataStorage:
-      enabled: false
-injector:
-  enabled: false
