@@ -16,8 +16,6 @@ spec:
         app: demo
     spec:
       serviceAccountName: demo-app-sa
-      imagePullSecrets:
-      - name: dockerhub-secret
       containers:
         - name: app
           image: nginxinc/nginx-unprivileged:latest
