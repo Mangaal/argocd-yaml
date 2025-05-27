@@ -1,0 +1,183 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: myresources.example.com
+spec:
+  group: example.com
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                message:
+                  type: string
+  scope: Namespaced
+  names:
+    plural: myresources
+    singular: myresource
+    kind: MyResource
+    shortNames:
+    - mr
+---
+apiVersion: example.com/v1alpha1
+kind: MyResource
+metadata:
+  name: app-01-custom-resource
+spec:
+  message: "This is a custom resource for app-01"
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: app-01-bc
+spec:
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/openshift/nodejs-ex.git' # Example Node.js app
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: nodejs:16 # Or your desired builder image from OpenShift namespace
+        namespace: openshift
+  output:
+    to:
+      kind: ImageStreamTag
+      name: app-01-is:latest
+  triggers:
+    - type: ConfigChange
+    - type: GitHub
+      github:
+        secret: yourwebhooksecret
+    - type: Generic
+      generic:
+        secret: yourgenericwebhooksecret
+---
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: app-01-dc
+spec:
+  replicas: 1
+  selector:
+    app: app-01-dc
+  template:
+    metadata:
+      labels:
+        app: app-01-dc
+    spec:
+      containers:
+      - name: hello-openshift
+        image: openshift/hello-openshift # Example image
+        ports:
+        - containerPort: 8080
+  triggers:
+    - type: ConfigChange # Redeploy if this DC changes
+    - type: ImageChange # If using an ImageStream
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - hello-openshift
+        from:
+          kind: ImageStreamTag
+          name: app-01-is:latest # Assuming an ImageStream named 'app-01-is'
+          namespace: test-app-01-ns
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: app-01-route
+spec:
+  to:
+    kind: Service
+    name: app-01-service
+  port:
+    targetPort: 80
+  # host: app-01-route.apps.your-openshift-cluster.com # Optional: OpenShift will generate one if not provided
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: app-01-cronjob
+spec:
+  schedule: "*/5 * * * *" # Every 5 minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hello
+            image: busybox
+            args:
+            - /bin/sh
+            - -c
+            - date; echo "Hello from the Kubernetes CronJob"
+          restartPolicy: OnFailure
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: app-01-read-access
+subjects:
+- kind: ServiceAccount
+  name: app-01-sa
+roleRef:
+  kind: Role
+  name: app-01-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: app-01-reader
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["pods", "pods/log"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app-01-sa
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-01-config
+data:
+  key1: value1
+  key2: "multi-line\nvalue"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-01-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app-01
+  template:
+    metadata:
+      labels:
+        app: app-01
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+    
+    
+    
