@@ -35,19 +35,6 @@ spec:
     name: dockerhub-imagepull-secret # Name of the Kubernetes secret
     create: true                   # Create the secret if it doesn't exist
     type: kubernetes.io/dockerconfigjson # Type for Docker registry credentials
-  templates:
-    ".dockerconfigjson": |
-      {
-        "auths": {
-          "{{ .Data.data.docker-server }}": {
-            "username": "{{ .Data.data.docker-username }}",
-            "password": "{{ .Data.data.docker-password }}",
-            "email": "{{ .Data.data.docker-email }}",
-            "auth": "{{ printf "%s:%s" .Data.data.docker-username .Data.data.docker-password | b64enc }}"
-          }
-        }
-      }  
-    
 ---
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
