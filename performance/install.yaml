@@ -1,3 +1,54 @@
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: vault-connection
+spec:
+  address: http://vault-csi-provider.vault.svc.cluster.local:8200
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: vault-auth
+spec:
+  vaultConnectionRef: vault-connection
+  method: kubernetes
+  # Mount to use when authenticating to auth method.
+  mount: kubernetes
+  # Kubernetes specific auth configuration, requires that the Method be set to kubernetes.
+  kubernetes:
+    # role to use when authenticating to Vault
+    role: app
+    # ServiceAccount to use when authenticating to Vault
+    # it is recommended to always provide a unique serviceAccount per Pod/application
+    serviceAccount: app-01-sa
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: vault-static-secret-v1
+spec:
+  vaultAuthRef: vault-auth
+  mount: secret
+  type: kv-v1
+  path: docker/demo-app/dockerhub
+  destination:
+    name: dockerhub-imagepull-secret # Name of the Kubernetes secret
+    create: true                   # Create the secret if it doesn't exist
+    type: kubernetes.io/dockerconfigjson # Type for Docker registry credentials
+  templates:
+    ".dockerconfigjson": |
+      {
+        "auths": {
+          "{{ .Data.data.docker-server }}": {
+            "username": "{{ .Data.data.docker-username }}",
+            "password": "{{ .Data.data.docker-password }}",
+            "email": "{{ .Data.data.docker-email }}",
+            "auth": "{{ printf "%s:%s" .Data.data.docker-username .Data.data.docker-password | b64enc }}"
+          }
+        }
+      }  
+    
+---
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
@@ -40,6 +91,8 @@ spec:
       labels:
         app: app-01-dc
     spec:
+      imagePullSecrets:
+      - name: dockerhub-imagepull-secret
       containers:
       - name: hello-openshift
         image: openshift/hello-openshift # Example image
@@ -82,6 +135,8 @@ spec:
     spec:
       template:
         spec:
+          imagePullSecrets:
+          - name: dockerhub-imagepull-secret
           containers:
           - name: hello
             image: busybox
@@ -139,6 +194,8 @@ spec:
       labels:
         app: app-01
     spec:
+      imagePullSecrets:
+      - name: dockerhub-imagepull-secret
       containers:
       - name: nginx
         image: nginxinc/nginx-unprivileged:latest
