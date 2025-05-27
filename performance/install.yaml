@@ -170,7 +170,7 @@ rules:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: app-01-sa
+  name: demo-app-sa
 ---
 apiVersion: v1
 kind: ConfigMap
