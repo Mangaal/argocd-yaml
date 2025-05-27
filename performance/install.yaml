@@ -25,13 +25,6 @@ spec:
     shortNames:
     - mr
 ---
-apiVersion: example.com/v1alpha1
-kind: MyResource
-metadata:
-  name: app-01-custom-resource
-spec:
-  message: "This is a custom resource for app-01"
----
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
@@ -175,7 +168,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:latest
+        image: nginxinc/nginx-unprivileged:latest
         ports:
         - containerPort: 80
     
