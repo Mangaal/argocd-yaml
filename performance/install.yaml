@@ -20,7 +20,7 @@ spec:
     role: app
     # ServiceAccount to use when authenticating to Vault
     # it is recommended to always provide a unique serviceAccount per Pod/application
-    serviceAccount: app-01-sa
+    serviceAccount: demo-app-sa
 ---
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultStaticSecret
