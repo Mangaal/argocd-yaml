@@ -78,6 +78,7 @@ spec:
       labels:
         app: app-01-dc
     spec:
+      imagePullPolicy: IfNotPresent
       imagePullSecrets:
       - name: dockerhub-imagepull-secret
       containers:
@@ -122,6 +123,7 @@ spec:
     spec:
       template:
         spec:
+          imagePullPolicy: IfNotPresent
           imagePullSecrets:
           - name: dockerhub-imagepull-secret
           containers:
@@ -181,6 +183,7 @@ spec:
       labels:
         app: app-01
     spec:
+      imagePullPolicy: IfNotPresent
       imagePullSecrets:
       - name: dockerhub-imagepull-secret
       containers:
