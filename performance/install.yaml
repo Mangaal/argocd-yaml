@@ -166,7 +166,7 @@ kind: ConfigMap
 metadata:
   name: app-01-config
 data:
-  key1: value1
+  key1: value3
   key2: "multi-line\nvalue"
 ---
 apiVersion: apps/v1
@@ -174,7 +174,7 @@ kind: Deployment
 metadata:
   name: app-01-deployment
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: app-01
