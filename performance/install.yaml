@@ -3,8 +3,7 @@ kind: Secret
 metadata:
   # You can change the name of the secret if you like
   name: dockerhub-creds
-  # Make sure this is the namespace where your pods will run
-  namespace: default
+  # Make sure this is the namespace where your pods will 
 type: kubernetes.io/dockerconfigjson
 data:
   # This is the base64 representation of the JSON data you provided
