@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  # You can change the name of the secret if you like
+  name: dockerhub-creds
+  # Make sure this is the namespace where your pods will run
+  namespace: default
+type: kubernetes.io/dockerconfigjson
+data:
+  # This is the base64 representation of the JSON data you provided
+  .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJtYW5nYWFsZG9jaHViIiwicGFzc3dvcmQiOiJJYW1LaW5nKjExIiwiZW1haWwiOiJhbmdvbW1lZXRlaW1hbmdhYWxAZ21haWwuY29tIiwiYXV0aCI6ImJXSnVkRzluWkc0dWIyUnZkWTI5dGJITnliM0owT2daRlJEVT0ifX19
+---
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
@@ -40,6 +52,8 @@ spec:
       labels:
         app: app-01-dc
     spec:
+      imagePullSecrets:
+      - name: dockerhub-creds
       containers:
       - name: hello-openshift
         image: openshift/hello-openshift # Example image
@@ -90,6 +104,8 @@ spec:
     spec:
       template:
         spec:
+          imagePullSecrets:
+          - name: dockerhub-creds
           containers:
           - name: hello
             image: busybox
@@ -148,6 +164,8 @@ spec:
       labels:
         app: app-01
     spec:
+      imagePullSecrets:
+      - name: dockerhub-creds
       containers:
       - name: nginx
         image: nginxinc/nginx-unprivileged:latest
