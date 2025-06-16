@@ -4,7 +4,6 @@ data:
 kind: Secret
 metadata:
   name: dockerhub-creds
-  namespace: default
 type: kubernetes.io/dockerconfigjson
 ---
 apiVersion: build.openshift.io/v1
