@@ -1,13 +1,11 @@
 apiVersion: v1
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJtYW5nYWFsZG9jaHViIiwicGFzc3dvcmQiOiJJYW1LaW5nKjExIiwiZW1haWwiOiJhbmdvbW1lZXRlaW1hbmdhYWxAZ21haWwuY29tIiwiYXV0aCI6ImJXRnVaMkZoYkdSdlkyaDFZanBKWVcxTGFXNW5LakV4In19fQ==
 kind: Secret
 metadata:
-  # You can change the name of the secret if you like
   name: dockerhub-creds
-  # Make sure this is the namespace where your pods will 
+  namespace: default
 type: kubernetes.io/dockerconfigjson
-data:
-  # This is the base64 representation of the JSON data you provided
-  .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJtYW5nYWFsZG9jaHViIiwicGFzc3dvcmQiOiJJYW1LaW5nKjExIiwiZW1haWwiOiJhbmdvbW1lZXRlaW1hbmdhYWxAZ21haWwuY29tIiwiYXV0aCI6ImJXRnVaMkZoYkdSdlkyaDFZanBKWVcxTGFXNW5LakV4In19fQ==
 ---
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
