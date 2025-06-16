@@ -85,8 +85,6 @@ spec:
     spec:
       template:
         spec:
-          imagePullSecrets:
-          - name: dockerhub-imagepull-secret
           containers:
           - name: hello
             image: busybox
@@ -145,8 +143,6 @@ spec:
       labels:
         app: app-01
     spec:
-      imagePullSecrets:
-      - name: dockerhub-imagepull-secret
       containers:
       - name: nginx
         image: nginxinc/nginx-unprivileged:latest
