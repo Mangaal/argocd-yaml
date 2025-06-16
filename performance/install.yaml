@@ -139,7 +139,7 @@ kind: Deployment
 metadata:
   name: app-01-deployment
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: app-01
