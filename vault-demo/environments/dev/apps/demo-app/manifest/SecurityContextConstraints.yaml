@@ -19,4 +19,3 @@ fsGroup:
   type: RunAsAny
 users:
 - system:serviceaccount:demo-app:demo-app-sa
-EOF
