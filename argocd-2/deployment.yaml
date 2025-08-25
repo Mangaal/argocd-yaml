@@ -28,5 +28,5 @@ spec:
               for i in $(seq 1 10); do
                 echo "Log line $i at $(date)"
               done
-              sleep 10
+              sleep 3
             done
