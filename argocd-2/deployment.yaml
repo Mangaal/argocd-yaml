@@ -26,7 +26,18 @@ spec:
           - |
             while true; do
               for i in $(seq 1 10); do
-                echo "Log line $i at $(date)"
+                echo "FAST log line $i at $(date)"
               done
               sleep 3
+            done
+      - name: slow-logger
+        image: busybox:1.36
+        command: ["/bin/sh","-c"]
+        args:
+          - |
+            i=0
+            while true; do
+              i=$((i+1))
+              echo "SLOW log $i at $(date)"
+              sleep 15
             done
