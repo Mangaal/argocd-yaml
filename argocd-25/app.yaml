@@ -1,9 +1,16 @@
-apiVersion: nextgen.k8s.test/v1alpha1
-kind: AppReplica
+apiVersion: batch/v1
+kind: CronJob
 metadata:
-  name: app
-  namespace: argocd-25
+  name: test-cronjob
+  namespace: test-namespace
 spec:
-  deploymentName: example-foo
-  replicas: 2
-  deploymentImage: "nginx:latest"
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hello
+            image: busybox:1.28
+            command: ["/bin/sh", "-c", "echo Hello"]
+          restartPolicy: OnFailure
