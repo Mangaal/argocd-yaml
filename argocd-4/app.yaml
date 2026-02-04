@@ -1,10 +1,61 @@
-apiVersion: nextgen.k8s.test/v1alpha1
-kind: AppReplica
+---
+# 1. The Application Deployment
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: app
-  namespace: argocd-4
+  name: route-blue-gerbil
+  labels:
+    app: blue-gerbil
 spec:
-  deploymentName: example-foo
-  replicas: 2
-  deploymentImage: "nginx:latest"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blue-gerbil
+  template:
+    metadata:
+      labels:
+        app: blue-gerbil
+    spec:
+      containers:
+        - name: hello-openshift
+          image: quay.io/openshift/origin-hello-openshift
+          ports:
+            - containerPort: 8888
+              name: http
 
+---
+# 2. The Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: route-blue-gerbil
+spec:
+  selector:
+    app: blue-gerbil
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8888 # Targets the container's HTTP port
+
+---
+# 3. The Route (Using your externalCertificate config)
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: route-blue-gerbil
+spec:
+  host: myapp.example.com
+  to:
+    kind: Service
+    name: route-blue-gerbil
+    weight: 100
+  port:
+    targetPort: http # Matches the Service port name
+  tls:
+    termination: edge # Changed to 'edge' so it works with the HTTP container
+    insecureEdgeTerminationPolicy: Redirect
+    externalCertificate:
+      name: my-route-cert-secret
+    # Conflicting fields nullified for clean GitOps sync
+    certificate: null
+    key: null
