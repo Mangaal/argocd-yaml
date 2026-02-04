@@ -1,9 +1,53 @@
+# -------------------------------------------------------------------------
+# 1. Application ServiceAccount: Identity for your Pods
+# -------------------------------------------------------------------------
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: blue-gerbil-sa
+  namespace: test-external-tls
+
 ---
-# 1. The Application Deployment
+# -------------------------------------------------------------------------
+# 2. RBAC: Allow the OpenShift Router (Ingress) to read the secret
+#    (Note: This permission is for the ROUTER, not your App SA)
+# -------------------------------------------------------------------------
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: secret-reader
+  namespace: test-external-tls
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    resourceNames: ["my-route-cert-secret"] # Restrict access to just this secret
+    verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: secret-reader-binding
+  namespace: test-external-tls
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: secret-reader
+subjects:
+  # Crucial: We grant permission to the OpenShift Ingress Controller
+  - kind: ServiceAccount
+    name: router
+    namespace: openshift-ingress
+
+---
+# -------------------------------------------------------------------------
+# 3. Deployment: The Application (using the new SA)
+# -------------------------------------------------------------------------
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: route-blue-gerbil
+  namespace: test-external-tls
   labels:
     app: blue-gerbil
 spec:
@@ -16,6 +60,7 @@ spec:
       labels:
         app: blue-gerbil
     spec:
+      serviceAccountName: blue-gerbil-sa  # <--- Using the new SA here
       containers:
         - name: hello-openshift
           image: quay.io/openshift/origin-hello-openshift
@@ -24,25 +69,31 @@ spec:
               name: http
 
 ---
-# 2. The Service
+# -------------------------------------------------------------------------
+# 4. Service
+# -------------------------------------------------------------------------
 apiVersion: v1
 kind: Service
 metadata:
   name: route-blue-gerbil
+  namespace: test-external-tls
 spec:
   selector:
     app: blue-gerbil
   ports:
     - name: http
       port: 80
-      targetPort: 8888 # Targets the container's HTTP port
+      targetPort: 8888
 
 ---
-# 3. The Route (Using your externalCertificate config)
+# -------------------------------------------------------------------------
+# 5. Route: Pointing to the External Certificate
+# -------------------------------------------------------------------------
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: route-blue-gerbil
+  namespace: test-external-tls
 spec:
   host: myapp.example.com
   to:
@@ -50,12 +101,11 @@ spec:
     name: route-blue-gerbil
     weight: 100
   port:
-    targetPort: http # Matches the Service port name
+    targetPort: http
   tls:
-    termination: edge # Changed to 'edge' so it works with the HTTP container
+    termination: edge
     insecureEdgeTerminationPolicy: Redirect
     externalCertificate:
       name: my-route-cert-secret
-    # Conflicting fields nullified for clean GitOps sync
     certificate: null
     key: null
