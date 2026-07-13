@@ -20,5 +20,5 @@ spec:
         # The shell will safely ignore our fake args.
         command: ["sh", "-c", "sleep 3600"]
         args:
-        - "--authoritative-cpu-request-dry-run=true"
-        - "--authoritative-cpu-limit-dry-run=true"
+        - "--authoritative-cpu-request-dry-run=false"
+        - "--authoritative-cpu-limit-dry-run=false"
