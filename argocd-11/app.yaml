@@ -16,7 +16,9 @@ spec:
       containers:
       - name: test-container
         image: alpine:latest
-        command: ["sleep", "3600"]
+        # Wrap the sleep in a shell command. 
+        # The shell will safely ignore our fake args.
+        command: ["sh", "-c", "sleep 3600"]
         args:
         - "--authoritative-cpu-request-dry-run=true"
         - "--authoritative-cpu-limit-dry-run=true"
