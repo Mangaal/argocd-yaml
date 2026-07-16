@@ -13,6 +13,18 @@ spec:
       labels:
         app: ship-status-dashboard
     spec:
+      serviceAccountName: chai-bot
       containers:
         - name: dashboard
           image: registry.k8s.io/pause:3.10
+          env:
+            - name: SHIP_STATUS_AUTH_TOKEN_FILE
+              value: /var/run/secrets/chai-bot/token
+          volumeMounts:
+            - name: chai-bot-token
+              mountPath: /var/run/secrets/chai-bot
+              readOnly: true
+      volumes:
+        - name: chai-bot-token
+          secret:
+            secretName: chai-bot-token
