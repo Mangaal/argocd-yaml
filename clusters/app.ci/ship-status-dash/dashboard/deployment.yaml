@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ship-status-dashboard
+  namespace: manifest-path-repro
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ship-status-dashboard
+  template:
+    metadata:
+      labels:
+        app: ship-status-dashboard
+    spec:
+      containers:
+        - name: dashboard
+          image: registry.k8s.io/pause:3.10
