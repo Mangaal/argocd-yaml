@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: autosync-repro
 data:
-  version: commit-b
+  version: commit-c
