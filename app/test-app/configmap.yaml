@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: manifest-path-repro
+data:
+  version: version-1
+  feature: disabled
