@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: autosync-repro-delay
+  namespace: autosync-repro
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: delay
+          image: registry.access.redhat.com/ubi9/ubi-minimal
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "Holding synchronization open"
+              sleep 120
