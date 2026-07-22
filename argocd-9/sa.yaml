@@ -3,4 +3,5 @@ kind: ServiceAccount
 metadata:
   name: default
   namespace: test-sa-gitops
-# We intentionally leave out imagePullSecrets here for step 1
+# Explicitly define the empty array so Git ([]) matches Live filtered ([])
+imagePullSecrets: []
