@@ -4,6 +4,7 @@ metadata:
   name: default
   namespace: test-sa-gitops
 imagePullSecrets:
-- name: my-database-secret-14313
+- name: my-database-secret
+- name: my-database-secret-b
 - name: test-secret 
 # Explicitly define the empty array so Git ([]) matches Live filtered ([])
