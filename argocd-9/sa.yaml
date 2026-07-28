@@ -2,5 +2,4 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: default
-  namespace: test-sa-gitops
 # Explicitly define the empty array so Git ([]) matches Live filtered ([])
