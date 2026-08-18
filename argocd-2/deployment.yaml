@@ -22,7 +22,7 @@ spec:
         image: nginx
         command: ["/bin/sh"]
         args:
-          - "-c"
+          - "-c applevhvhdc"
           - |
             while true; do
               for i in $(seq 1 10); do
