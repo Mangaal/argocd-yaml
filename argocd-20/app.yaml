@@ -4,5 +4,15 @@ metadata:
   name: cert-manager-operator
   labels:
     security.openshift.io/scc.podSecurityLabelSync: "true"
-    pod-security.kubernetes.io/warn: privileged
-    pod-security.kubernetes.io/audit: privileged
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: openshift-cert-manager-operator
+  namespace: cert-manager-operator
+spec:
+  targetNamespaces:
+    - cert-manager-operator
+
+    
+    
